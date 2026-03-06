@@ -21,7 +21,7 @@ class SteamOpenID
         // Store the action (login or register) in session
         Session::put(self::SESSION_KEY, $action);
         
-        $redirectUrl = config('app.url') . '/auth/steam/callback';
+        $redirectUrl = config('app.url') . '/auth/steam/callback?popup=1';
         
         $params = [
             'openid.ns'         => 'http://specs.openid.net/auth/2.0',
@@ -38,7 +38,7 @@ class SteamOpenID
     /**
      * Handle the callback from Steam and authenticate the user.
      */
-    public function handleCallback(): \Illuminate\Http\RedirectResponse
+    public function handleCallback()
     {
         try {
             $request = request();
@@ -79,6 +79,12 @@ class SteamOpenID
 
             Log::info('User logged in', ['user_id' => $user->id, 'steam_id' => $steamId]);
 
+            // Check if this is a popup request
+            if ($request->has('popup')) {
+                // Return the popup success view
+                return view('auth.steam-callback');
+            }
+            
             return redirect()->intended('/')->with('success', 'Bienvenue, ' . $user->name . ' !');
             
         } catch (\Exception $e) {

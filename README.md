@@ -288,6 +288,85 @@ php artisan storage:link
 
 ---
 
+## 🎮 Authentification Epic Games
+
+### Configuration Epic OAuth 2.0
+
+#### Etape 1: Creer un compte developpeur Epic Games
+1. Rendez-vous sur [Epic Developer Portal](https://dev.epicgames.com/portal/)
+2. Connectez-vous avec votre compte Epic Games (ou creez-en un)
+3. Completez les informations de compte developpeur
+
+#### Etape 2: Creer une application
+1. Dans le Developer Portal, allez dans **"Applications"** > **"Create an Application"**
+2. Remplissez les informations:
+   - **Application Name**: LooterStrike (ou le nom de votre projet)
+   - **Application Type**: Website
+   - **Platform**: Web
+
+#### Etape 3: Configurer les parametres OAuth
+1. Dans les parametres de l'application, allez dans **"Client Settings"**
+2. Configurez les **Redirect URIs**:
+   ```
+   http://looter.local/auth/epic/callback
+   http://127.0.0.1:8000/auth/epic/callback
+   ```
+3. Configurez les **CORS Allowed Origins** (pour le developpement local):
+   ```
+   http://looter.local
+   http://127.0.0.1:8000
+   http://localhost:8000
+   ```
+
+#### Etape 4: Obtenir les identifiants
+1. Allez dans **"Client Credentials"**
+2. Notez les informations suivantes:
+   - **Client ID** (ou Client ID - App ID)
+   - **Client Secret** (secret key)
+
+#### Etape 5: Configuration .env
+Ajoutez les variables suivantes dans votre fichier `.env`:
+```dotenv
+# Epic Games OAuth
+EPIC_CLIENT_ID=votre_epic_client_id
+EPIC_CLIENT_SECRET=votre_epic_client_secret
+EPIC_REDIRECT_URI=https://looter.local/auth/epic/callback
+```
+
+### Flux d'Authentification Epic
+
+1. L'utilisateur clique sur "Login avec Epic Games"
+2. Redirection vers Epic OAuth 2.0 Authorization
+3. L'utilisateur autorise l'application
+4. Epic renvoie un code d'autorisation
+5. Le serveur echange le code contre un access_token
+6. Recuperation des informations utilisateur via Epic Account API
+7. Creation/MAJ du compte utilisateur en base
+8. Affichage "Bienvenue agent {epicname}" avec avatar
+
+### Donnees Epic Recuperees
+
+| Champ | Description |
+|-------|-------------|
+| epic_id | ID unique Epic Games |
+| epic_display_name | Nom d'affichage Epic |
+| epic_avatar | Avatar Epic (lien externe) |
+| epic_name | Nom d'utilisateur Epic |
+| email | Email (si scope demande) |
+
+### URL d'authentification Epic
+
+```
+https://www.epicgames.com/id/authorize
+    ?client_id=VOTRE_CLIENT_ID
+    &redirect_uri=URI_DE_REDIRECT
+    &response_type=code
+    &scope=basic profile friends
+    &state=ETAT_SECURITE
+```
+
+---
+
 ## 📁 Structure du Projet
 
 ```

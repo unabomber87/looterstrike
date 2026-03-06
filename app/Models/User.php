@@ -23,6 +23,10 @@ class User extends Authenticatable
         'password',
         'steam_id',
         'steam_avatar',
+        'epic_id',
+        'epic_display_name',
+        'epic_name',
+        'epic_avatar',
     ];
 
     /**

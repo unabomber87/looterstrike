@@ -19,6 +19,18 @@ Route::get('/auth/steam/register', [\App\Http\Controllers\Auth\SteamController::
 // Callback generique - detecte si login ou register
 Route::get('/auth/steam/callback', [\App\Http\Controllers\Auth\SteamController::class, 'handleCallback']);
 
+// Epic Games Auth routes
+// Login: connecte un utilisateur existant
+Route::get('/auth/epic/login', [\App\Http\Controllers\Auth\EpicController::class, 'redirectToEpicLogin'])
+    ->name('epic.login');
+    
+// Register: cree un nouveau compte utilisateur  
+Route::get('/auth/epic/register', [\App\Http\Controllers\Auth\EpicController::class, 'redirectToEpicRegister'])
+    ->name('epic.register');
+
+// Callback generique - detecte si login ou register
+Route::get('/auth/epic/callback', [\App\Http\Controllers\Auth\EpicController::class, 'handleCallback']);
+
 // Debug route to see callback parameters
 Route::get('/debug/callback', function () {
     dd(request()->all());

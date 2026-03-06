@@ -11,14 +11,22 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-// Inscription désactivée - connexion Steam uniquement
-// Login désactivé - connexion Steam uniquement
+// Inscription désactivée - connexion Steam/Epic/PlayStation uniquement
+// Login email désactivé - uniquement pour usage interne admin
 
+// Route离散 pour login admin (accessible uniquement aux admins)
 Route::middleware('guest')->group(function () {
-    // Login et register désactivés - Steam uniquement via modal
-    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    //     ->name('login');
-    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // Route离散 pour login admin - /auth/admin au lieu de /login
+    Route::get('auth/admin', [AuthenticatedSessionController::class, 'create'])
+        ->name('admin.login');
+    Route::post('auth/admin', [AuthenticatedSessionController::class, 'store']);
+    
+    // Ancien /login redirect vers page d'accueil
+    Route::get('login', function () {
+        return redirect()->route('home');
+    })->name('login');
+    
+    // Register Completely Disabled - users can only register via Steam/Epic/PlayStation
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
