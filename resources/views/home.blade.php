@@ -15,7 +15,7 @@
     ============================================================ -->
     <section id="hero">
         <!-- Image de fond (remplacer src par l'image réelle du projet) -->
-        <img class="bg-image" src="{{ asset('labe.jpg') }}" alt="Hero background">
+        <img class="bg-image parallax" src="{{ asset('img/labe.jpg') }}" alt="Hero background">
 
         <div class="container position-relative d-flex flex-column justify-content-center align-items-center h-100">
             <h1 class="display-3 fw-bold animate__animated animate__fadeInDown">LooterStrike</h1>

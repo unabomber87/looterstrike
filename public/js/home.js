@@ -126,3 +126,19 @@ new Swiper('.watch-swiper', {
    ANNÉE DYNAMIQUE — Footer copyright
 ---------------------------------------------------------- */
 document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+/* ----------------------------------------------------------
+   EFFET PARALLAX — Hero Background
+   Déclencheur : scroll
+---------------------------------------------------------- */
+const heroParallax = document.querySelector('#hero .parallax');
+
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const rate = scrolled * 0.4;
+    
+    if (heroParallax && scrolled <= window.innerHeight) {
+        heroParallax.style.transform = `translateY(${rate}px)`;
+    }
+});

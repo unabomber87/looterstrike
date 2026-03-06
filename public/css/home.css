@@ -246,6 +246,13 @@ body { padding-top: 0; }
     object-fit: cover;
     object-position: center top;
     opacity: 0.25;
+    will-change: transform;
+}
+
+/* Effet Parallax */
+#hero .parallax {
+    transform: translateZ(0);
+    transition: transform 0.1s ease-out;
 }
 
 /* Bouton play principal (hero) */
