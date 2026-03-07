@@ -68,6 +68,41 @@ looterStrike/
 - Gestion admin complète (CRUD produits)
 - Uniformisation de la hauteur et largeur des cartes produits
 
+## ⚠️ RÈGLES TRÈS IMPORTANTES - À RETENIR
+
+### Blade Components vs @extends/@section
+
+**NE JAMAIS** utiliser `<x-app-layout>` pour les pages du backoffice admin (`/admin/*`).
+
+- **Backoffice admin** : Utiliser `@extends('layouts.app')` + `@section('content')`
+- **Pages profile/auth** : Les views Laravel Breeze utilisent `<x-app-layout>` qui nécessite `$slot` dans le layout
+
+Exemple correct pour une page admin :
+```blade
+@extends('layouts.app')
+
+@section('title', 'Nom de la page')
+
+@section('content')
+    <!-- Contenu de la page -->
+@endsection
+```
+
+Exemple à **NE PAS** utiliser pour le backoffice :
+```blade
+<x-app-layout>
+    <x-slot name="header">...</x-slot>
+    <!-- Contenu -->
+</x-app-layout>
+```
+
+### Fonctionnalités
+- Carrousel de produits gaming avecSwiper (4 slides desktop, 2 tablette, 1 mobile)
+- Affiliation Amazon avec tag `looterstrike-20`
+- Affichage dynamique des produits via API `/api/products`
+- Gestion admin complète (CRUD produits)
+- Uniformisation de la hauteur et largeur des cartes produits
+
 ### Fichiers clés
 
 ```
