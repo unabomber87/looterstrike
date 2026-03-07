@@ -20,6 +20,9 @@
                             <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                                 {{ __('Products') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.*')">
+                                {{ __('Profile') }}
+                            </x-nav-link>
                             <x-nav-link href="{{ url('/') }}" target="_blank">
                                 {{ __('Aller au front') }}
                             </x-nav-link>
@@ -87,6 +90,9 @@
                 @if(Auth::user()->isAdmin())
                     <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                         {{ __('Products') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.*')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
                 @endif
             @endauth

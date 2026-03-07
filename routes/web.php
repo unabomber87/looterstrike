@@ -53,20 +53,18 @@ Route::get('/dashboard', function () {
 Route::get('/api/products', [ProductController::class, 'index']);
 
 // Admin Routes - Protégées par auth et is_admin
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('is_admin')->group(function () {
+    Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin Products - Protégé par is_admin
-    Route::middleware('is_admin')->group(function () {
-        Route::get('/admin/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
-        Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-        Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
-        Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
-        Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
-        Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
-    });
+    // Admin Products
+    Route::get('/admin/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
+    Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 });
 
 /*
