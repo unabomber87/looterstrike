@@ -15,11 +15,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create admin user (created on every deployment)
+        \App\Models\User::firstOrCreate(
+            ['email' => 'admin@looterstrike.fr'],
+            [
+                'name' => 'Admin',
+                'email' => 'admin@looterstrike.fr',
+                'password' => bcrypt('admin123'),
+                'is_admin' => true,
+            ]
+        );
+
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]
+        );
+
+        $this->call([
+            ProductSeeder::class,
         ]);
     }
 }

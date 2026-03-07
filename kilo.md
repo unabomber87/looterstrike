@@ -59,7 +59,53 @@ looterStrike/
 | Login public | `/login` | Redirige vers homepage |
 | Register | `/register` | Désactivé |
 
-## 🎮 Flux d'authentification Steam (Popup)
+## 🛒 Système de Produits Amazon Affiliation
+
+### Fonctionnalités
+- Carrousel de produits gaming avecSwiper (4 slides desktop, 2 tablette, 1 mobile)
+- Affiliation Amazon avec tag `looterstrike-20`
+- Affichage dynamique des produits via API `/api/products`
+- Gestion admin complète (CRUD produits)
+- Uniformisation de la hauteur et largeur des cartes produits
+
+### Fichiers clés
+
+```
+looterStrike/
+├── app/
+│   ├── Models/
+│   │   └── Product.php              # Modèle produit
+│   └── Http/Controllers/
+│       └── ProductController.php     # API + Admin CRUD
+├── resources/views/
+│   ├── admin/products/
+│   │   ├── index.blade.php         # Liste produits
+│   │   ├── create.blade.php         # Création produit
+│   │   └── edit.blade.php          # Édition produit
+│   └── home.blade.php               # Carrousel produits
+├── routes/
+│   └── web.php                      # Route API + Admin
+└── public/
+    ├── css/home.css                 # Styles carrousel
+    └── js/home.js                   # Init Swiper
+```
+
+### Commandes
+
+```bash
+# Voir les produits
+php artisan tinker --execute="echo \\App\\Models\\Product::count() . PHP_EOL;"
+
+# Ajouter un produit manuellement
+php artisan tinker --execute="\\App\\Models\\Product::create(['title' => 'Test', 'category' => 'Mouse', 'price' => 49.99, 'amazon_asin' => 'B000000000', 'stars' => 5, 'sort_order' => 1]);"
+```
+
+### URL d'affiliation
+
+Les liens Amazon sont générés au format :
+```
+https://www.amazon.com/dp/{ASIN}?tag=looterstrike-20
+```
 
 1. Utilisateur clique sur "Se connecter avec Steam"
 2. Popup s'ouvre (600x700) avec la page Steam
@@ -105,3 +151,24 @@ php artisan migrate
 - `resources/views/auth/steam-callback.blade.php` - Page de succès avec compteur
 - `resources/views/snippets/navbar.blade.php` - Popup auth
 - `routes/auth.php` - Routes login/register discrètes
+
+## 📰 Système de News RSS avec Cache
+
+### Fonctionnalités
+- Récupération automatique des news depuis 5 flux RSS (IGN, GameSpot, PC Gamer, Polygon, Kotaku)
+- Stockage en base de données avec déduplication via hash SHA-256
+- Rafraîchissement automatique toutes les 3 heures via scheduler
+- Page dédiée `/news` avec infinite scroll (9 articles par chargement)
+
+### Fichiers clés
+
+```
+looterStrike/
+├── app/
+│   ├── Models/
+│   │   └── NewsCache.php           # Modèle pour le cache des news
+│   ├── Services/
+│   │   └── RssFetcherService.php   # Service de fetch RSS avec persistanc
+│   └── Console/Commands/
+│       └── FetchRssCommand.php     # Command
+```

@@ -1,8 +1,84 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v12.11.2...12.x)
+## [v0.0.03](https://github.com/unabomber87/looterstrike/compare/v0.0.02...v0.0.03) - 2026-03-07
 
-## [v12.11.2](https://github.com/laravel/laravel/compare/v12.11.1...v12.11.2) - 2026-01-19
+### RSS Feed + Amazon Gear Display
+
+* Add Product model with Amazon affiliate support
+* Add ProductController with API endpoint (`/api/products`)
+* Add ProductSeeder with 12 gaming products
+* Add Amazon affiliation URL generation in API (`https://www.amazon.com/dp/{ASIN}?tag=looterstrike-20`)
+* Add admin product management (create, edit, delete products)
+* Add shop carousel on home page with dynamic product loading
+* Add news section with RSS articles from 5 sources (IGN, GameSpot, PC Gamer, Polygon, Kotaku)
+* Add FetchRssCommand to fetch and cache RSS articles
+* Execute `php artisan app:fetch-rss` to populate news (85 articles fetched)
+
+### Bug Fixes
+
+* Fix footer duplication in home.blade.php
+* Fix JavaScript syntax errors (unescaped line break, duplicate code)
+* Fix product button HTML tag (missing closing bracket)
+* Fix product price display in USD instead of EUR
+
+### UI/UX Improvements
+
+* Add uniform height to product cards using flexbox
+* Add uniform width to product cards in carousel
+* Restore CSS from original template (home.html)
+
+## [v0.0.02](https://github.com/unabomber87/looterstrike/compare/v0.0.01...v0.0.02) - 2026-03-07
+
+### News RSS Cache System
+
+* Add NewsCache model with link_hash for deduplication
+* Add RssFetcherService with RSS fetch and parse (5 feeds: IGN, GameSpot, PC Gamer, Polygon, Kotaku)
+* Add FetchRssCommand (`php artisan app:fetch-rss`)
+* Add scheduler for automatic refresh every 3 hours
+* Add news page (`/news`) with infinite scroll
+* Add API endpoint (`/api/news`) for pagination
+* Add pagination to home page (9 articles)
+
+### UI/UX Improvements
+
+* Update navbar with News link replacing Matchs
+* Style "Vous avez vu tous les articles!" message
+* Fix home.js errors on pages without required elements
+
+### Database
+
+* Add news_cache table with link_hash for unique constraint
+
+## [v0.0.01](https://github.com/unabomber87/looterstrike/compare/v0.0.01...main) - 2026-03-06
+
+### Authentication System
+
+* Add Steam OpenID authentication with popup support
+* Add Epic Games OAuth service (Coming Soon - disabled)
+* Add "Bienvenue agent {name}" menu with dropdown on hover
+* Disable public registration - users only via Steam/Epic/PlayStation
+* Add discrete admin login route (/auth/admin)
+* Create steam-callback.blade.php with success countdown (4-3-2-1)
+* Center auth popup modal with responsive font sizing
+
+### UI/UX Improvements
+
+* Add parallax effect to hero section
+* Update README with project documentation
+* Fix logo overflow on mobile in auth popup
+
+### Database
+
+* Add steam_id and steam_avatar fields to users table
+* Add epic_id, epic_display_name, and epic_avatar fields to users table
+
+### Services
+
+* Create SteamOpenID service for Steam authentication
+* Create EpicOAuth service for Epic Games (disabled)
+* Create SteamController and EpicController
+
+## [Unreleased](https://github.com/laravel/laravel/compare/v12.11.2...12.x)
 
 * [12.x] Update composer dev script to ensure no timeout by [@jackbayliss](https://github.com/jackbayliss) in https://github.com/laravel/laravel/pull/6735
 * [12.x] Update jobs/cache migrations by [@jackbayliss](https://github.com/jackbayliss) in https://github.com/laravel/laravel/pull/6736

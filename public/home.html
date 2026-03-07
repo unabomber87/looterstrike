@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LooterStrike</title>
+
+    <!-- ============================================================
+         DÉPENDANCES EXTERNES (CDN)
+         - Fonts       : Instrument Sans (corps) + Orbitron (logo)
+         - Swiper 11   : Carrousels (Watch Live & Shop)
+         - Bootstrap 5 : Grille, Modal, Toggler
+         - Font Awesome: Icônes (réseaux, flèches, contacts...)
+         - Animate.css : Classes d'animation utilisées par WOW.js
+    ============================================================ -->
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=orbitron:700" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <!-- Animate.css (requis par WOW.js) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+
+        /* ============================================================
+           VARIABLES GLOBALES & RESET
+        ============================================================ */
+        :root {
+            --primary-color: #FF6A00;
+            --secondary-color: #222222;
+            --hover-color: wheat;
+            --btn-gradient-start: #FF6A00;
+            --btn-gradient-end: #FFA500;
+        }
+
+        body,
+        .navbar,
+        .navbar-nav .nav-link,
+        .btn-dome {
+            font-family: 'Instrument Sans', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { padding-top: 0; }
+
+
+        /* ============================================================
+           NAVBAR — Fixe en haut, dégradé conservé au scroll
+           - .scrolled  : réduit le padding + ajoute une ombre
+           - curtainDown: animation de chute au premier affichage
+           - gyrophare  : clignotement orange/blanc sur le logo au hover
+        ============================================================ */
+        .navbar {
+            background: linear-gradient(to bottom, #3f4543, #020d11);
+            padding: 0.5rem 1rem;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            transition: background 0.8s ease, padding 0.8s ease, box-shadow 0.8s ease;
+        }
+
+        .navbar.scrolled {
+            background: linear-gradient(to bottom, #3f4543, #020d11);
+            padding: 0.3rem 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            animation: curtainDown 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes curtainDown {
+            0%   { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes gyrophare {
+            0%, 100% { color: var(--primary-color); }
+            50%       { color: white; }
+        }
+
+        /* Logo */
+        .navbar-brand {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: font-style 0.2s;
+        }
+        .navbar-brand:hover {
+            font-style: italic;
+            animation: gyrophare 0.4s infinite;
+        }
+
+        /* Liens de navigation */
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .navbar-nav .nav-link {
+            color: white !important;
+            position: relative;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        .navbar-nav .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            height: 3px; width: 0%;
+            background-color: var(--hover-color);
+            transition: width 0.3s;
+        }
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active { color: var(--hover-color) !important; }
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after { width: 100%; }
+
+        /* Dropdown */
+        .navbar-nav .dropdown { position: relative; }
+        .navbar-nav .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            padding: 0.5rem 0;
+            background: linear-gradient(to bottom, #3f4543, #020d11);
+            min-width: 180px;
+            border: none;
+            z-index: 9999;
+        }
+        .navbar-nav .dropdown:hover .dropdown-menu { display: block; }
+        .navbar-nav .dropdown-item {
+            color: white;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .navbar-nav .dropdown-item:hover {
+            background-color: var(--hover-color);
+            color: #020d11 !important;
+        }
+
+        /* Bouton Login (lien simple avec soulignement) */
+        .navbar-buttons .nav-link {
+            position: relative;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        .navbar-buttons .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            height: 3px; width: 0%;
+            background-color: var(--hover-color);
+            transition: width 0.3s;
+        }
+        .navbar-buttons .nav-link:hover::after { width: 100%; }
+        .navbar-buttons .nav-link:hover { color: var(--hover-color) !important; }
+
+        /* Boutons dôme (Register / Subscribe) */
+        .navbar-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .navbar-buttons .btn-dome,
+        .footer-newsletter .footer-subscribe {
+            position: relative;
+            overflow: hidden;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(to bottom, var(--btn-gradient-start), var(--btn-gradient-end));
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: color 0.4s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .navbar-buttons .btn-dome::before,
+        .footer-newsletter .footer-subscribe::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            width: 20px; height: 20px;
+            background: linear-gradient(to bottom, var(--btn-gradient-end), var(--btn-gradient-start));
+            border-radius: 50%;
+            transform: translate(-50%, 50%) scale(0);
+            transition: transform 0.7s ease-in-out, width 0.7s, height 0.7s;
+            z-index: 0;
+        }
+        .navbar-buttons .btn-dome span,
+        .footer-newsletter .footer-subscribe span { position: relative; z-index: 1; }
+        .navbar-buttons .btn-dome:hover::before,
+        .footer-newsletter .footer-subscribe:hover::before {
+            width: 300%; height: 300%;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        /* Hamburger mobile */
+        .navbar-toggler { border-color: rgba(255,255,255,0.5); }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Navbar responsive */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: linear-gradient(to bottom, #3f4543, #020d11);
+                padding: 1rem;
+            }
+            .navbar-nav { flex-direction: column; gap: 0; }
+            .navbar-nav .dropdown-menu { position: static; margin-top: 0; }
+            .navbar-buttons { flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; align-items: center; width: 100%; }
+            .navbar-buttons .nav-link { text-align: center; }
+        }
+
+
+        /* ============================================================
+           BOUTON RETOUR EN HAUT
+           - Apparaît après 80px de scroll (classe .visible ajoutée via JS)
+           - Position fixe bas-droite
+        ============================================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 44px; height: 44px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(255,106,0,0.4);
+        }
+        .back-to-top.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top:hover { background: #e05a00; transform: translateY(-3px); }
+
+
+        /* ============================================================
+           HERO — Section plein écran avec image de fond + bouton play
+           - margin-top: -64px  compense le navbar fixe
+           - .play-wrapper      contient le bouton + cercles sonar
+           - @keyframes sonar   animation de pulsation des cercles
+        ============================================================ */
+        #hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin-top: -64px;
+            background-color: var(--primary-color);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        #hero img.bg-image {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            opacity: 0.25;
+        }
+
+        /* Bouton play principal (hero) */
+        .play-wrapper {
+            position: relative;
+            width: 200px; height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .play-btn {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: transparent;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            position: relative; z-index: 2;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .play-btn svg {
+            width: 26px; height: 26px;
+            fill: none; stroke: white; stroke-width: 2.5;
+            stroke-linejoin: round; margin-left: 4px;
+            transition: stroke 0.3s;
+        }
+
+        /* Cercles sonar (hero + slides carrousel) */
+        .circle-anim,
+        .slide-circle {
+            position: absolute;
+            top: 50%; left: 50%;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            animation: sonar 2.4s ease-out infinite;
+            pointer-events: none;
+        }
+        .circle-anim { width: 80px; height: 80px; }
+        .slide-circle { width: 72px; height: 72px; }
+        .circle-anim.delay1,
+        .slide-circle.d1 { animation-delay: 0.8s; }
+        .circle-anim.delay2,
+        .slide-circle.d2 { animation-delay: 1.6s; }
+
+        @keyframes sonar {
+            0%   { transform: translate(-50%,-50%) scale(1);   opacity: 0.8; }
+            100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+        }
+
+
+        /* ============================================================
+           MATCHES — Section des matchs à venir
+           - .match-row     : ligne = équipe gauche | score | équipe droite
+           - .match-team    : bloc équipe (gauche ou droite)
+           - .match-center  : score VS + date + liens de stream
+           - Sur mobile     : stack vertical + séparateur dégradé orange
+        ============================================================ */
+        .matches-section { padding: 5rem 0; background: #111; color: white; }
+        .matches-section .section-heading h3 { color: wheat; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .matches-section .section-heading h2 { font-weight: 700; font-size: 2.2rem; margin-bottom: 1rem; }
+        .matches-section .section-heading h2 span { color: var(--primary-color); }
+        .matches-section .section-heading p { opacity: 0.7; max-width: 600px; margin: 0 auto; }
+
+        .match-row {
+            display: flex;
+            align-items: stretch;
+            gap: 6px;
+            margin-bottom: 1.2rem;
+        }
+        .match-team {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 37%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .match-team.left  { border-left:  3px solid var(--primary-color); }
+        .match-team.right { border-right: 3px solid var(--primary-color); flex-direction: row-reverse; text-align: right; }
+        .match-team:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(255,106,0,0.15); }
+        .match-team img { width: 60px; height: 60px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(255,106,0,0.3)); }
+        .match-team h4 { margin: 0; font-size: 1rem; font-weight: 600; }
+        .match-team h4 a { color: white; text-decoration: none; transition: color 0.3s; }
+        .match-team h4 a:hover { color: var(--primary-color); }
+        .match-team .match-info { font-size: 0.75rem; opacity: 0.5; margin-top: 3px; }
+
+        .match-center {
+            text-align: center;
+            width: 22%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .match-center .match-score { font-size: 1.6rem; font-weight: 700; letter-spacing: 4px; color: var(--primary-color); }
+        .match-center .match-date  { font-size: 0.75rem; opacity: 0.5; margin: 4px 0 10px; }
+        .match-center .watch-links { display: flex; justify-content: center; gap: 0.8rem; }
+        .match-center .watch-links a { color: white; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: color 0.3s, transform 0.3s; }
+        .match-center .watch-links a:hover { color: #FF6A00; transform: scale(1.3); }
+
+        /* Responsive Matches */
+        @media (max-width: 768px) {
+            .match-row { flex-direction: column; gap: 6px; }
+            .match-row + .match-row { margin-top: 0; }
+            .match-row + .match-row::before {
+                content: '';
+                display: block;
+                width: 60%;
+                height: 2px;
+                background: linear-gradient(to right, transparent, #FF6A00, transparent);
+                margin: 1.2rem auto;
+            }
+            .match-team,
+            .match-team.right { width: 100%; flex-direction: row; text-align: left; }
+            .match-center { width: 100%; }
+        }
+
+
+        /* ============================================================
+           WATCH LIVE — Carrousel coverflow des replays / streams
+           - Effet coverflow Swiper : slide centrale agrandie, côtés assombris
+           - .slide-play-wrapper  : bouton play visible uniquement sur la slide active
+           - Flèches orangées + pagination (points visibles mobile seulement)
+        ============================================================ */
+        .watch-section { padding: 5rem 0; background: #0a0a0a; color: white; }
+        .watch-section .section-heading h3 { color: wheat; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .watch-section .section-heading h2 { font-weight: 700; font-size: 2.2rem; margin-bottom: 1rem; }
+        .watch-section .section-heading h2 span { color: var(--primary-color); }
+        .watch-section .section-heading p { opacity: 0.7; max-width: 600px; margin: 0 auto; }
+
+        .watch-carousel-wrap { position: relative; padding: 0 50px; }
+        .watch-swiper { overflow: hidden; border-radius: 12px; }
+        .watch-swiper .swiper-slide {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            width: 600px;
+            transition: transform 0.4s;
+        }
+        .watch-swiper .swiper-slide img {
+            width: 100%; height: 380px;
+            object-fit: cover; display: block;
+            transition: filter 0.5s;
+            filter: brightness(0.45);
+        }
+        .watch-swiper .swiper-slide-active img { filter: brightness(0.65); }
+        .watch-swiper .swiper-slide:hover img { filter: brightness(0.35); }
+
+        /* Bouton play des slides */
+        .watch-swiper .swiper-slide .slide-play-wrapper { opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+        .watch-swiper .swiper-slide-active .slide-play-wrapper { opacity: 1; pointer-events: all; }
+        .slide-play-wrapper {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px; height: 160px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .slide-play-btn {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: transparent;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; position: relative; z-index: 2;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .slide-play-btn svg { width: 24px; height: 24px; fill: none; stroke: white; stroke-width: 2.5; stroke-linejoin: round; margin-left: 4px; transition: stroke 0.3s; }
+        .slide-play-wrapper:hover .slide-play-btn { background: #FF6A00; border-color: black; }
+        .slide-play-wrapper:hover .slide-play-btn svg { stroke: black; }
+
+        /* Flèches de navigation Watch */
+        .watch-prev, .watch-next {
+            color: white;
+            width: 44px; height: 44px;
+            background: rgba(255,106,0,0.15);
+            border-radius: 50%;
+            border: 1px solid rgba(255,106,0,0.4);
+            transition: all 0.3s;
+        }
+        .watch-prev:after, .watch-next:after { font-size: 1rem; font-weight: 700; }
+        .watch-prev:hover, .watch-next:hover { background: #FF6A00; border-color: #FF6A00; }
+        .watch-prev { left: 0; }
+        .watch-next { right: 0; }
+
+        /* Pagination (points) */
+        .watch-pagination { margin-top: 1.5rem; }
+        .watch-pagination .swiper-pagination-bullet { background: rgba(255,255,255,0.3); opacity: 1; }
+        .watch-pagination .swiper-pagination-bullet-active { background: #FF6A00; transform: scale(1.3); }
+
+        /* Responsive Watch */
+        @media (max-width: 768px) {
+            .watch-carousel-wrap { padding: 0; }
+            .watch-swiper .swiper-slide { width: 85vw; }
+            .watch-swiper .swiper-slide img { height: 220px; }
+            .watch-prev, .watch-next { display: none; }
+            .watch-pagination { display: block; }
+        }
+        @media (min-width: 769px) {
+            .watch-pagination { display: none; }
+        }
+
+
+        /* ============================================================
+           SHOP — Carrousel de produits Amazon affiliés
+           - 4 slides visible desktop / 2 tablette / 1 mobile
+           - .product-btn      : bouton "Voir sur Amazon" qui monte au hover
+           - .product-badge    : étiquette Hot / Sale / In Stock / Out of Stock
+        ============================================================ */
+        .shop-section { padding: 5rem 0; background: #0a0a0a; color: white; }
+        .shop-section .section-heading h3 { color: wheat; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .shop-section .section-heading h2 { font-weight: 700; font-size: 2.2rem; margin-bottom: 1rem; }
+        .shop-section .section-heading h2 span { color: var(--primary-color); }
+        .shop-section .section-heading p { opacity: 0.7; max-width: 600px; margin: 0 auto; }
+
+        .shop-carousel-wrap { position: relative; padding: 0 50px; }
+        .shop-swiper { overflow: hidden; }
+
+        .product-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 35px rgba(255,106,0,0.2); }
+
+        .product-thumb { position: relative; overflow: hidden; }
+        .product-thumb img { width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.4s, filter 0.4s; filter: brightness(0.9); }
+        .product-card:hover .product-thumb img { transform: scale(1.05); filter: brightness(0.7); }
+
+        .product-badge {
+            position: absolute;
+            top: 0.75rem; left: 0.75rem;
+            font-size: 0.68rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 0.2rem 0.6rem; border-radius: 4px; color: white;
+        }
+        .product-badge.hot     { background: #FF6A00; }
+        .product-badge.sale    { background: #e63946; }
+        .product-badge.instock { background: #2a9d8f; }
+        .product-badge.outstock{ background: #555; }
+
+        /* Bouton Amazon (monte au hover) */
+        .product-btn {
+            position: absolute;
+            bottom: -44px; left: 0; right: 0;
+            background: #FF6A00; color: white;
+            text-align: center; padding: 0.6rem;
+            font-size: 0.82rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none;
+            transition: bottom 0.3s;
+        }
+        .product-card:hover .product-btn { bottom: 0; }
+
+        .product-info { padding: 1rem; }
+        .product-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .product-cat { font-size: 0.72rem; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; }
+        .product-stars { display: flex; gap: 2px; }
+        .product-stars i { font-size: 0.65rem; color: #FF6A00; }
+        .product-info h5 { margin: 0 0 0.4rem; font-size: 0.9rem; font-weight: 600; }
+        .product-info h5 a { color: white; text-decoration: none; transition: color 0.3s; }
+        .product-info h5 a:hover { color: var(--primary-color); }
+        .product-price { font-size: 1rem; font-weight: 700; color: var(--primary-color); }
+
+        /* Flèches de navigation Shop */
+        .shop-prev, .shop-next {
+            color: white;
+            width: 44px; height: 44px;
+            background: rgba(255,106,0,0.15);
+            border-radius: 50%;
+            border: 1px solid rgba(255,106,0,0.4);
+            transition: all 0.3s;
+            top: 40%;
+        }
+        .shop-prev:after, .shop-next:after { font-size: 1rem; font-weight: 700; }
+        .shop-prev:hover, .shop-next:hover { background: #FF6A00; border-color: #FF6A00; }
+        .shop-prev { left: 0; }
+        .shop-next { right: 0; }
+
+        /* Responsive Shop */
+        @media (max-width: 768px) {
+            .shop-carousel-wrap { padding: 0; }
+            .shop-swiper .swiper-slide { width: 100%; }
+        }
+
+
+        /* ============================================================
+           NEWS — Grille 3 cartes d'actualités
+           - .news-tag       : badge catégorie (coin haut gauche)
+           - .news-read-more : lien flèche qui s'écarte au hover
+           - WOW.js          : fadeInUp avec délais décalés (100/250/400ms)
+        ============================================================ */
+        .news-section { padding: 5rem 0; background: #111; color: white; }
+        .news-section .section-heading h3 { color: wheat; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .news-section .section-heading h2 { font-weight: 700; font-size: 2.2rem; margin-bottom: 1rem; }
+        .news-section .section-heading h2 span { color: var(--primary-color); }
+        .news-section .section-heading p { opacity: 0.7; max-width: 600px; margin: 0 auto; }
+
+        .news-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 3px solid var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        .news-card:hover { transform: translateY(-6px); box-shadow: 0 12px 35px rgba(255,106,0,0.2); }
+
+        .news-thumb { position: relative; overflow: hidden; }
+        .news-thumb img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s, filter 0.5s; filter: brightness(0.85); }
+        .news-card:hover .news-thumb img { transform: scale(1.05); filter: brightness(0.7); }
+
+        .news-tag {
+            position: absolute;
+            top: 1rem; left: 1rem;
+            background: var(--primary-color); color: white;
+            font-size: 0.72rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 0.25rem 0.75rem; border-radius: 4px;
+        }
+
+        .news-body { padding: 1.4rem; }
+        .news-meta { list-style: none; padding: 0; margin: 0 0 0.8rem; display: flex; gap: 1.2rem; }
+        .news-meta li { font-size: 0.75rem; opacity: 0.5; }
+        .news-meta li i { margin-right: 4px; color: var(--primary-color); }
+        .news-body h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; line-height: 1.5; }
+        .news-body h4 a { color: white; text-decoration: none; transition: color 0.3s; }
+        .news-body h4 a:hover { color: var(--primary-color); }
+        .news-body p { font-size: 0.85rem; opacity: 0.6; margin-bottom: 1rem; line-height: 1.6; }
+
+        .news-read-more {
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--primary-color); text-decoration: none;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: gap 0.3s;
+        }
+        .news-read-more:hover { color: white; gap: 10px; }
+
+
+        /* ============================================================
+           FOOTER — 4 colonnes : Brand | Liens | Contact | Newsletter
+           - .footer-title::after  : trait orange sous chaque titre
+           - .footer-links a::before : point orange au hover
+           - .footer-bottom        : bande copyright semi-transparente
+        ============================================================ */
+        .site-footer {
+            background: #020d11;
+            color: white;
+            padding: 5rem 0 0;
+            border-top: 3px solid var(--primary-color);
+        }
+        .footer-item p { font-size: 0.88rem; opacity: 0.6; line-height: 1.8; margin-bottom: 1.5rem; }
+
+        /* Logo footer */
+        .footer-brand {
+            display: inline-block;
+            font-size: 1.8rem; font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            color: white; text-decoration: none;
+            margin-bottom: 1rem;
+        }
+        .footer-brand span { color: var(--primary-color); }
+
+        /* Icônes réseaux sociaux */
+        .footer-social { list-style: none; padding: 0; display: flex; gap: 0.6rem; margin: 0; }
+        .footer-social a {
+            width: 36px; height: 36px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.85rem;
+            transition: all 0.3s; text-decoration: none;
+        }
+        .footer-social a:hover { background: var(--primary-color); border-color: var(--primary-color); }
+
+        /* Titres de colonnes */
+        .footer-title {
+            font-size: 1rem; font-weight: 700;
+            color: white; margin-bottom: 1.5rem;
+            position: relative; padding-bottom: 0.75rem;
+        }
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 36px; height: 2px;
+            background: var(--primary-color);
+        }
+
+        /* Liens utiles */
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.6rem; }
+        .footer-links a {
+            color: rgba(255,255,255,0.6); text-decoration: none;
+            font-size: 0.88rem; transition: all 0.3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .footer-links a::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%; background: var(--primary-color);
+            opacity: 0; transition: opacity 0.3s; flex-shrink: 0;
+        }
+        .footer-links a:hover { color: var(--primary-color); padding-left: 4px; }
+        .footer-links a:hover::before { opacity: 1; }
+
+        /* Contact */
+        .footer-contact { list-style: none; padding: 0; margin: 0; }
+        .footer-contact li { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 1rem; font-size: 0.88rem; opacity: 0.7; }
+        .footer-contact li i { color: var(--primary-color); margin-top: 3px; flex-shrink: 0; }
+
+        /* Newsletter */
+        .footer-newsletter { display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer-newsletter input {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 6px; padding: 0.65rem 1rem;
+            color: white; font-size: 0.85rem; outline: none;
+            transition: border-color 0.3s;
+        }
+        .footer-newsletter input::placeholder { color: rgba(255,255,255,0.35); }
+        .footer-newsletter input:focus { border-color: var(--primary-color); }
+        .footer-newsletter .footer-subscribe {
+            padding: 0.35rem 1.2rem;
+            font-size: 0.88rem;
+            width: fit-content;
+        }
+
+        /* Barre copyright */
+        .footer-bottom {
+            background: rgba(0,0,0,0.3);
+            margin-top: 2rem; padding: 1.2rem 0;
+            text-align: center;
+        }
+        .footer-bottom p { margin: 0; font-size: 0.82rem; opacity: 0.5; }
+
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         NAVBAR
+         - Logo Orbitron + liens de navigation + dropdown Tournois
+         - Boutons Login (lien) et Register (btn dôme)
+         - Hamburger responsive Bootstrap
+    ============================================================ -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">LooterStrike</a>
+
+            <!-- Hamburger mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarMain">
+
+                <!-- Liens principaux -->
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#upcoming-matches">Matchs</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">Tournois</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Tournoi A</a></li>
+                            <li><a class="dropdown-item" href="#">Tournoi B</a></li>
+                            <li><a class="dropdown-item" href="#">Tournoi C</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#watch-live">Live</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#shop">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#news">Actualités</a></li>
+                </ul>
+
+                <!-- Boutons Login / Register -->
+                <div class="navbar-buttons">
+                    <a class="nav-link" href="#">Login</a>
+                    <a class="btn-dome" href="#"><span>Register</span></a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ============================================================
+         HERO
+         - Image de fond semi-transparente (à remplacer par l'asset réel)
+         - Titre + slogan avec animations Animate.css
+         - Bouton play circulaire avec effet sonar → ouvre modal YouTube
+    ============================================================ -->
+    <section id="hero">
+        <!-- Image de fond (remplacer src par l'image réelle du projet) -->
+        <img class="bg-image" src="https://placehold.co/1920x1080/020d11/FF6A00?text=LooterStrike" alt="Hero background">
+
+        <div class="container position-relative d-flex flex-column justify-content-center align-items-center h-100">
+            <h1 class="display-3 fw-bold animate__animated animate__fadeInDown">LooterStrike</h1>
+            <p class="lead mb-4 animate__animated animate__fadeInUp">Strike Fast. Loot Hard.</p>
+
+            <!-- Bouton play + cercles sonar -->
+            <div class="play-wrapper">
+                <button id="playBtn" class="play-btn" aria-label="Regarder la vidéo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="6,3 20,12 6,21"/>
+                    </svg>
+                </button>
+                <span class="circle-anim"></span>
+                <span class="circle-anim delay1"></span>
+                <span class="circle-anim delay2"></span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         MATCHES
+         - 3 lignes de matchs avec animation WOW fadeInLeft/Right
+         - Chaque ligne : équipe gauche | score VS + date | équipe droite
+         - Les logos des équipes sont à remplacer par les vrais assets
+    ============================================================ -->
+    <section id="upcoming-matches" class="matches-section">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="section-heading text-center mb-5 wow animate__animated animate__fadeInDown">
+                <h3>Upcoming Matches</h3>
+                <h2>Battles Extreme <br> Masters <span>Tournament</span></h2>
+                <p>Our success in creating business solutions comes from our talented and committed team.</p>
+            </div>
+
+            <!-- Match 1 -->
+            <div class="match-row">
+                <div class="match-team left wow animate__animated animate__fadeInLeft" data-wow-delay="0ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T1" alt="Purple Death Cadets">
+                    <div>
+                        <h4><a href="#">Purple Death Cadets</a></h4>
+                        <div class="match-info">Group 04 | Match 06th</div>
+                    </div>
+                </div>
+                <div class="match-center">
+                    <div class="match-score">VS</div>
+                    <div class="match-date">25TH May 2024 — 10:00</div>
+                    <div class="watch-links">
+                        <a href="https://www.youtube.com" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.twitch.tv"   target="_blank" rel="noopener"><i class="fab fa-twitch"></i></a>
+                    </div>
+                </div>
+                <div class="match-team right wow animate__animated animate__fadeInRight" data-wow-delay="0ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T2" alt="Trigger Brain Squad">
+                    <div>
+                        <h4><a href="#">Trigger Brain Squad</a></h4>
+                        <div class="match-info">Group 04 | Match 06th</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match 2 -->
+            <div class="match-row">
+                <div class="match-team left wow animate__animated animate__fadeInLeft" data-wow-delay="150ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T3" alt="The Black Hat Hackers">
+                    <div>
+                        <h4><a href="#">The Black Hat Hackers</a></h4>
+                        <div class="match-info">Group 04 | Match 07th</div>
+                    </div>
+                </div>
+                <div class="match-center">
+                    <div class="match-score">VS</div>
+                    <div class="match-date">10TH Jan 2024 — 12:30</div>
+                    <div class="watch-links">
+                        <a href="https://www.youtube.com" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.twitch.tv"   target="_blank" rel="noopener"><i class="fab fa-twitch"></i></a>
+                    </div>
+                </div>
+                <div class="match-team right wow animate__animated animate__fadeInRight" data-wow-delay="150ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T4" alt="Your Worst Nightmare">
+                    <div>
+                        <h4><a href="#">Your Worst Nightmare</a></h4>
+                        <div class="match-info">Group 05 | Match 02nd</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match 3 -->
+            <div class="match-row">
+                <div class="match-team left wow animate__animated animate__fadeInLeft" data-wow-delay="300ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T5" alt="Witches and Quizards">
+                    <div>
+                        <h4><a href="#">Witches and Quizards</a></h4>
+                        <div class="match-info">Group 02 | Match 03rd</div>
+                    </div>
+                </div>
+                <div class="match-center">
+                    <div class="match-score">VS</div>
+                    <div class="match-date">15TH Dec 2024 — 04:20</div>
+                    <div class="watch-links">
+                        <a href="https://www.youtube.com" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.twitch.tv"   target="_blank" rel="noopener"><i class="fab fa-twitch"></i></a>
+                    </div>
+                </div>
+                <div class="match-team right wow animate__animated animate__fadeInRight" data-wow-delay="300ms">
+                    <img src="https://placehold.co/60x60/1a1a2e/FF6A00?text=T6" alt="Resting Bitch Faces">
+                    <div>
+                        <h4><a href="#">Resting Bitch Faces</a></h4>
+                        <div class="match-info">Group 02 | Match 03rd</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         WATCH LIVE
+         - Carrousel Swiper en mode coverflow (5 slides)
+         - data-video : URL YouTube embed à passer au modal au clic
+         - Flèches .watch-prev/.watch-next + pagination .watch-pagination
+    ============================================================ -->
+    <section id="watch-live" class="watch-section">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="section-heading text-center mb-5 wow animate__animated animate__fadeInDown">
+                <h3>Watch The Gameplay</h3>
+                <h2>Watch Live <span>Streaming</span></h2>
+                <p>Our success in creating business solutions comes from our talented and committed team.</p>
+            </div>
+
+            <div class="watch-carousel-wrap">
+                <div class="swiper watch-swiper">
+                    <div class="swiper-wrapper">
+
+                        <!-- Slide 1 — Remplacer data-video par l'ID YouTube réel -->
+                        <div class="swiper-slide" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+                            <img src="https://placehold.co/900x500/1a1a2e/FF6A00?text=Match+Replay+1" alt="Stream 1">
+                            <div class="slide-play-wrapper">
+                                <button class="slide-play-btn" aria-label="Lancer la vidéo">
+                                    <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                </button>
+                                <span class="slide-circle"></span>
+                                <span class="slide-circle d1"></span>
+                                <span class="slide-circle d2"></span>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="swiper-slide" data-video="https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1">
+                            <img src="https://placehold.co/900x500/1a1a2e/FF6A00?text=Match+Replay+2" alt="Stream 2">
+                            <div class="slide-play-wrapper">
+                                <button class="slide-play-btn" aria-label="Lancer la vidéo">
+                                    <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                </button>
+                                <span class="slide-circle"></span>
+                                <span class="slide-circle d1"></span>
+                                <span class="slide-circle d2"></span>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="swiper-slide" data-video="https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1">
+                            <img src="https://placehold.co/900x500/1a1a2e/FF6A00?text=Match+Replay+3" alt="Stream 3">
+                            <div class="slide-play-wrapper">
+                                <button class="slide-play-btn" aria-label="Lancer la vidéo">
+                                    <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                </button>
+                                <span class="slide-circle"></span>
+                                <span class="slide-circle d1"></span>
+                                <span class="slide-circle d2"></span>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="swiper-slide" data-video="https://www.youtube.com/embed/RgKAFK5djSk?autoplay=1">
+                            <img src="https://placehold.co/900x500/1a1a2e/FF6A00?text=Match+Replay+4" alt="Stream 4">
+                            <div class="slide-play-wrapper">
+                                <button class="slide-play-btn" aria-label="Lancer la vidéo">
+                                    <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                </button>
+                                <span class="slide-circle"></span>
+                                <span class="slide-circle d1"></span>
+                                <span class="slide-circle d2"></span>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5 -->
+                        <div class="swiper-slide" data-video="https://www.youtube.com/embed/JGwWNGJdvx8?autoplay=1">
+                            <img src="https://placehold.co/900x500/1a1a2e/FF6A00?text=Match+Replay+5" alt="Stream 5">
+                            <div class="slide-play-wrapper">
+                                <button class="slide-play-btn" aria-label="Lancer la vidéo">
+                                    <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                </button>
+                                <span class="slide-circle"></span>
+                                <span class="slide-circle d1"></span>
+                                <span class="slide-circle d2"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="swiper-button-prev watch-prev"></div>
+                    <div class="swiper-button-next watch-next"></div>
+                    <div class="swiper-pagination watch-pagination"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         SHOP — Affiliation Amazon
+         - Carrousel Swiper 4/2/1 colonnes selon la taille d'écran
+         - Remplacer les href="#" des .product-btn par les liens affiliés réels
+         - Remplacer les images placehold.co par les vraies photos produit
+    ============================================================ -->
+    <section id="shop" class="shop-section">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="section-heading text-center mb-5 wow animate__animated animate__fadeInDown">
+                <h3>Tendances Gaming</h3>
+                <h2>Top Gear <span>Amazon</span></h2>
+                <p>Les meilleurs équipements gaming du moment, sélectionnés pour vous.</p>
+            </div>
+
+            <div class="shop-carousel-wrap">
+                <div class="swiper shop-swiper">
+                    <div class="swiper-wrapper">
+
+                        <!-- Produit 1 : Mouse -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Mouse" alt="Souris gaming">
+                                    <span class="product-badge hot">Hot</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Mouse</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">Fantech Pro Mouse</a></h5>
+                                    <span class="product-price">$49.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 2 : Keyboard -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Keyboard" alt="Clavier mécanique">
+                                    <span class="product-badge sale">-30%</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Keyboard</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">Mechanical RGB Keyboard</a></h5>
+                                    <span class="product-price">$89.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 3 : Headset -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Headset" alt="Casque gaming">
+                                    <span class="product-badge instock">In Stock</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Headset</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">7.1 Surround Headset</a></h5>
+                                    <span class="product-price">$69.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 4 : Monitor -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Monitor" alt="Écran gaming">
+                                    <span class="product-badge hot">Hot</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Monitor</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">144Hz Gaming Monitor</a></h5>
+                                    <span class="product-price">$249.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 5 : Chair -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Chair" alt="Chaise gaming">
+                                    <span class="product-badge instock">In Stock</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Chair</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">Ergonomic Gaming Chair</a></h5>
+                                    <span class="product-price">$199.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 6 : Controller -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Controller" alt="Manette gaming">
+                                    <span class="product-badge sale">-20%</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Controller</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">Xbox Pro Controller</a></h5>
+                                    <span class="product-price">$79.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 7 : Mousepad -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Mousepad" alt="Tapis de souris XXL">
+                                    <span class="product-badge instock">In Stock</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Mousepad</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">XXL Desk Mousepad</a></h5>
+                                    <span class="product-price">$29.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 8 : Webcam -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Webcam" alt="Webcam 4K">
+                                    <span class="product-badge hot">Hot</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Webcam</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">4K Streaming Webcam</a></h5>
+                                    <span class="product-price">$119.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produit 9 : Microphone -->
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Microphone" alt="Microphone USB">
+                                    <span class="product-badge sale">-15%</span>
+                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">Microphone</span>
+                                        <div class="product-stars">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <h5><a href="#">USB Condenser Mic</a></h5>
+                                    <span class="product-price">$59.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="swiper-button-prev shop-prev"></div>
+                    <div class="swiper-button-next shop-next"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         NEWS
+         - 3 cartes d'articles avec animation WOW fadeInUp décalée
+         - Catégories : Esport / Tournament / Update (badge orange)
+         - Lien "Read More" avec flèche animée au hover
+    ============================================================ -->
+    <section id="news" class="news-section">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="section-heading text-center mb-5 wow animate__animated animate__fadeInDown">
+                <h3>What's on our mind</h3>
+                <h2>News and <span>Headlines</span></h2>
+                <p>Our success in creating business solutions comes from our talented and committed team.</p>
+            </div>
+
+            <div class="row">
+
+                <!-- Article 1 -->
+                <div class="col-lg-4 col-md-6 mb-4 wow animate__animated animate__fadeInUp" data-wow-delay="100ms">
+                    <div class="news-card">
+                        <div class="news-thumb">
+                            <img src="https://placehold.co/600x360/1a1a2e/FF6A00?text=News+1" alt="Actualité esport">
+                            <span class="news-tag">Esport</span>
+                        </div>
+                        <div class="news-body">
+                            <ul class="news-meta">
+                                <li><i class="fas fa-calendar-alt"></i> Jan 01 2025</li>
+                                <li><i class="fas fa-user"></i> LooterStrike</li>
+                            </ul>
+                            <h4><a href="#">How to dominate the ranked ladder in just a few weeks.</a></h4>
+                            <p>Top players share their strategies to climb the leaderboard faster than ever before...</p>
+                            <a class="news-read-more" href="#">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="col-lg-4 col-md-6 mb-4 wow animate__animated animate__fadeInUp" data-wow-delay="250ms">
+                    <div class="news-card">
+                        <div class="news-thumb">
+                            <img src="https://placehold.co/600x360/1a1a2e/FF6A00?text=News+2" alt="Tournoi esport">
+                            <span class="news-tag">Tournament</span>
+                        </div>
+                        <div class="news-body">
+                            <ul class="news-meta">
+                                <li><i class="fas fa-calendar-alt"></i> Feb 14 2025</li>
+                                <li><i class="fas fa-user"></i> LooterStrike</li>
+                            </ul>
+                            <h4><a href="#">The biggest tournament of the year is finally announced.</a></h4>
+                            <p>Teams from around the world will compete for the ultimate prize pool of $500,000...</p>
+                            <a class="news-read-more" href="#">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="col-lg-4 col-md-6 mb-4 wow animate__animated animate__fadeInUp" data-wow-delay="400ms">
+                    <div class="news-card">
+                        <div class="news-thumb">
+                            <img src="https://placehold.co/600x360/1a1a2e/FF6A00?text=News+3" alt="Mise à jour">
+                            <span class="news-tag">Update</span>
+                        </div>
+                        <div class="news-body">
+                            <ul class="news-meta">
+                                <li><i class="fas fa-calendar-alt"></i> Mar 05 2025</li>
+                                <li><i class="fas fa-user"></i> LooterStrike</li>
+                            </ul>
+                            <h4><a href="#">New season brings massive changes to the meta.</a></h4>
+                            <p>The latest patch notes reveal sweeping balance changes that will shake the competitive scene...</p>
+                            <a class="news-read-more" href="#">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         FOOTER
+         - Col 1 : Logo + description + réseaux sociaux
+         - Col 2 : Liens internes (ancres vers les sections) + pages légales
+         - Col 3 : Informations de contact (adresse, email, téléphone)
+         - Col 4 : Newsletter (input email + bouton dôme S'abonner)
+         - Footer bottom : copyright avec année dynamique via JS
+    ============================================================ -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row footer-items">
+
+                <!-- Colonne 1 : Marque -->
+                <div class="col-lg-3 col-sm-6 mb-5">
+                    <div class="footer-item">
+                        <a class="footer-brand" href="#">LooterStrike</a>
+                        <p>La plateforme gaming de référence. Suivez les matchs, regardez les streams et équipez-vous comme un pro.</p>
+                        <ul class="footer-social">
+                            <li><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" aria-label="Twitch"><i class="fab fa-twitch"></i></a></li>
+                            <li><a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Colonne 2 : Liens utiles -->
+                <div class="col-lg-3 col-sm-6 mb-5">
+                    <div class="footer-item">
+                        <h4 class="footer-title">Liens Utiles</h4>
+                        <ul class="footer-links">
+                            <li><a href="#upcoming-matches">Tournois</a></li>
+                            <li><a href="#watch-live">Live Streaming</a></li>
+                            <li><a href="#shop">Gaming Shop</a></li>
+                            <li><a href="#news">Actualités</a></li>
+                            <li><a href="#">Politique de Confidentialité</a></li>
+                            <li><a href="#">Conditions d'Utilisation</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Colonne 3 : Contact -->
+                <div class="col-lg-3 col-sm-6 mb-5">
+                    <div class="footer-item">
+                        <h4 class="footer-title">Contactez-nous</h4>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>123 Gaming Street, Tunis, TN</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>contact@looterstrike.gg</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span>+216 00 000 000</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Colonne 4 : Newsletter -->
+                <div class="col-lg-3 col-sm-6 mb-5">
+                    <div class="footer-item">
+                        <h4 class="footer-title">Newsletter</h4>
+                        <p style="opacity:0.6; font-size:0.85rem; margin-bottom:1rem;">Restez informé des dernières news et tournois.</p>
+                        <div class="footer-newsletter">
+                            <input type="email" placeholder="Votre email...">
+                            <!-- Connecter ce bouton au backend Laravel via un formulaire ou AJAX -->
+                            <button type="button" class="footer-subscribe"><span>S'abonner</span></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bande copyright -->
+        <div class="footer-bottom">
+            <div class="container">
+                <!-- L'année est injectée dynamiquement par JS -->
+                <p>&copy; <span id="currentYear"></span> LooterStrike. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ============================================================
+         MODAL YOUTUBE
+         - Déclenché par le bouton play du hero et les slides Watch Live
+         - src de l'iframe vidée à la fermeture du modal (arrêt autoplay)
+    ============================================================ -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark border-0">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    <div class="ratio ratio-16x9">
+                        <iframe id="videoIframe" src="" title="LooterStrike video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================
+         BOUTON RETOUR EN HAUT
+         - Classe .visible ajoutée / retirée par le listener scroll JS
+    ============================================================ -->
+    <button class="back-to-top" id="backToTop" aria-label="Retour en haut">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <!-- ============================================================
+         SCRIPTS — Tous les JS sont regroupés ici en bas de page
+         Ordre important :
+           1. Swiper       (carrousels)
+           2. Bootstrap    (modal)
+           3. WOW.js       (animations au scroll)
+           4. Script custom (navbar sticky, modal vidéo, carrousels init)
+    ============================================================ -->
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Bootstrap 5 JS (bundle = Popper inclus) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- WOW.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
+    <script>
+
+        /* ----------------------------------------------------------
+           NAVBAR STICKY + BOUTON RETOUR EN HAUT
+           Déclencheur : scroll > 80px
+        ---------------------------------------------------------- */
+        const navbar    = document.querySelector('.navbar');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+                backToTop.classList.add('visible');
+            } else {
+                navbar.classList.remove('scrolled');
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+
+        /* ----------------------------------------------------------
+           WOW.JS — Initialisation des animations au scroll
+        ---------------------------------------------------------- */
+        new WOW().init();
+
+
+        /* ----------------------------------------------------------
+           MODAL VIDÉO HERO
+           - Hover sur .play-wrapper : change le style du bouton
+           - Clic sur #playBtn       : ouvre le modal avec l'URL YouTube
+           - Fermeture du modal      : vide le src de l'iframe (arrêt autoplay)
+        ---------------------------------------------------------- */
+        const playBtn      = document.getElementById('playBtn');
+        const videoModal   = document.getElementById('videoModal');
+        const videoIframe  = document.getElementById('videoIframe');
+        const playWrapper  = document.querySelector('.play-wrapper');
+
+        playWrapper.addEventListener('mouseenter', () => {
+            playBtn.style.background    = '#FF6A00';
+            playBtn.style.borderColor   = 'black';
+            playBtn.querySelector('svg').style.stroke = 'black';
+        });
+        playWrapper.addEventListener('mouseleave', () => {
+            playBtn.style.background    = 'transparent';
+            playBtn.style.borderColor   = 'white';
+            playBtn.querySelector('svg').style.stroke = 'white';
+        });
+
+        playBtn.addEventListener('click', () => {
+            // Remplacer l'URL par celle de la vidéo de présentation du projet
+            videoIframe.src = "https://www.youtube.com/embed/b9YN_mAS-VM?si=YgBrGaNi8NG-Nfge&autoplay=1";
+            new bootstrap.Modal(videoModal).show();
+        });
+
+        videoModal.addEventListener('hidden.bs.modal', () => {
+            videoIframe.src = "";
+        });
+
+
+        /* ----------------------------------------------------------
+           MODAL VIDÉO — Slides Watch Live
+           Chaque slide porte l'URL dans son attribut data-video
+        ---------------------------------------------------------- */
+        document.querySelectorAll('.slide-play-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', () => {
+                const videoUrl = wrapper.closest('.swiper-slide').getAttribute('data-video');
+                videoIframe.src = videoUrl;
+                new bootstrap.Modal(videoModal).show();
+            });
+        });
+
+
+        /* ----------------------------------------------------------
+           CARROUSEL SHOP
+           4 slides desktop / 2 tablette / 1 mobile
+        ---------------------------------------------------------- */
+        new Swiper('.shop-swiper', {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            loop: true,
+            navigation: {
+                nextEl: '.shop-next',
+                prevEl: '.shop-prev',
+            },
+            breakpoints: {
+                0:    { slidesPerView: 1, spaceBetween: 12 },
+                576:  { slidesPerView: 2, spaceBetween: 16 },
+                992:  { slidesPerView: 3, spaceBetween: 20 },
+                1200: { slidesPerView: 4, spaceBetween: 20 },
+            },
+        });
+
+
+        /* ----------------------------------------------------------
+           CARROUSEL WATCH LIVE — Effet Coverflow
+           Slide centrale agrandie (depth 200 / modifier 3)
+           Flèches + pagination points (mobile)
+        ---------------------------------------------------------- */
+        new Swiper('.watch-swiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            loop: true,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 200,
+                modifier: 3,
+                slideShadows: false,
+            },
+            pagination: {
+                el: '.watch-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.watch-next',
+                prevEl: '.watch-prev',
+            },
+        });
+
+
+        /* ----------------------------------------------------------
+           ANNÉE DYNAMIQUE — Footer copyright
+        ---------------------------------------------------------- */
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    </script>
+
+</body>
+</html>

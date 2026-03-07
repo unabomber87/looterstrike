@@ -21,7 +21,7 @@
             <!-- Liens principaux -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}">Accueil</a></li>
-                <li class="nav-item"><a class="nav-link" href="#upcoming-matches">Matchs</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('news') }}">News</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#">Tournois</a>
                     <ul class="dropdown-menu">
@@ -32,7 +32,6 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#watch-live">Live</a></li>
                 <li class="nav-item"><a class="nav-link" href="#shop">Shop</a></li>
-                <li class="nav-item"><a class="nav-link" href="#news">Actualités</a></li>
             </ul>
 
             <!-- Boutons Login / Register / User -->
@@ -120,7 +119,7 @@
             <div style="text-align: center;">
                 <!-- Logo -->
                 <div style="margin-bottom: 1.5rem;">
-                    <span style="font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.75rem; color: #F77F00; text-shadow: 0 0 20px #F77F00;">
+                    <span style="font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: clamp(1.25rem, 5vw, 1.75rem); color: #F77F00; text-shadow: 0 0 20px #F77F00; word-spacing: -2px;">
                         LOOTER<span style="color: #E63946;">STRIKE</span>
                     </span>
                 </div>

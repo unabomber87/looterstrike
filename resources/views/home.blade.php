@@ -248,198 +248,12 @@
 
             <div class="shop-carousel-wrap">
                 <div class="swiper shop-swiper">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper" id="products-container">
 
-                        <!-- Produit 1 : Mouse -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Mouse" alt="Souris gaming">
-                                    <span class="product-badge hot">Hot</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Mouse</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">Fantech Pro Mouse</a></h5>
-                                    <span class="product-price">$49.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 2 : Keyboard -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Keyboard" alt="Clavier mécanique">
-                                    <span class="product-badge sale">-30%</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Keyboard</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">Mechanical RGB Keyboard</a></h5>
-                                    <span class="product-price">$89.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 3 : Headset -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Headset" alt="Casque gaming">
-                                    <span class="product-badge instock">In Stock</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Headset</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">7.1 Surround Headset</a></h5>
-                                    <span class="product-price">$69.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 4 : Monitor -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Monitor" alt="Écran gaming">
-                                    <span class="product-badge hot">Hot</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Monitor</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">144Hz Gaming Monitor</a></h5>
-                                    <span class="product-price">$249.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 5 : Chair -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Chair" alt="Chaise gaming">
-                                    <span class="product-badge instock">In Stock</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Chair</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">Ergonomic Gaming Chair</a></h5>
-                                    <span class="product-price">$199.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 6 : Controller -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Controller" alt="Manette gaming">
-                                    <span class="product-badge sale">-20%</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Controller</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">Xbox Pro Controller</a></h5>
-                                    <span class="product-price">$79.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 7 : Mousepad -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Mousepad" alt="Tapis de souris XXL">
-                                    <span class="product-badge instock">In Stock</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Mousepad</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">XXL Desk Mousepad</a></h5>
-                                    <span class="product-price">$29.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 8 : Webcam -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Webcam" alt="Webcam 4K">
-                                    <span class="product-badge hot">Hot</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Webcam</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">4K Streaming Webcam</a></h5>
-                                    <span class="product-price">$119.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Produit 9 : Microphone -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-thumb">
-                                    <img src="https://placehold.co/300x260/1a1a2e/FF6A00?text=Microphone" alt="Microphone USB">
-                                    <span class="product-badge sale">-15%</span>
-                                    <a class="product-btn" href="#" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-top">
-                                        <span class="product-cat">Microphone</span>
-                                        <div class="product-stars">
-                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <h5><a href="#">USB Condenser Microphone</a></h5>
-                                    <span class="product-price">$89.00</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Les produits seront chargés dynamiquement depuis /api/products -->
 
                     </div>
+
                     <div class="swiper-button-prev shop-prev"></div>
                     <div class="swiper-button-next shop-next"></div>
                 </div>
@@ -466,66 +280,98 @@
             </div>
 
             <div class="row g-4">
-                <!-- Carte 1 -->
+                @forelse($articles as $index => $article)
                 <div class="col-lg-4 col-md-6">
-                    <article class="news-card wow animate__animated animate__fadeInUp" data-wow-delay="100ms">
+                    <article class="news-card wow animate__animated animate__fadeInUp" data-wow-delay="{{ $index * 100 }}ms">
                         <div class="news-thumb">
-                            <img src="https://placehold.co/600x400/1a1a2e/FF6A00?text=News+1" alt="Actualité 1">
-                            <span class="news-tag">Tournoi</span>
+                            @if($article['image'])
+                            <img src="{{ $article['image'] }}" alt="{{ Str::limit($article['title'], 50) }}">
+                            @else
+                            <img src="https://placehold.co/600x400/1a1a2e/FF6A00?text=News" alt="Actualité">
+                            @endif
+                            <span class="news-tag">{{ $article['source'] }}</span>
                         </div>
                         <div class="news-body">
                             <ul class="news-meta">
-                                <li><i class="far fa-calendar-alt"></i> 15 Mars 2024</li>
-                                <li><i class="far fa-user"></i> Admin</li>
+                                <li><i class="far fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($article['date'])->translatedFormat('d M Y') }}</li>
+                                <li><i class="far fa-user"></i> {{ $article['author'] }}</li>
+                                <li><i class="fas fa-newspaper"></i> {{ $article['source'] }}</li>
                             </ul>
-                            <h4><a href="#">LooterStrike Championship : Les équipes qualifiées</a></h4>
-                            <p>Découvrez les équipes qui se sont qualifiées pour la grande finale du championship...</p>
-                            <a href="#" class="news-read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                            <h4><a href="{{ $article['link'] }}" target="_blank" rel="noopener">{{ Str::limit($article['title'], 60) }}</a></h4>
+                            @if(!empty($article['content']))
+                            <p>{!! Str::words(html_entity_decode(strip_tags($article['content'])), 30, '...') !!}</p>
+                            @else
+                            <p class="text-muted small">Cliquez pour lire la suite...</p>
+                            @endif
+                            <a href="{{ $article['link'] }}" target="_blank" rel="noopener" class="news-read-more">Lire la suite sur {{ $article['source'] }} <i class="fas fa-external-link-alt"></i></a>
                         </div>
                     </article>
                 </div>
-
-                <!-- Carte 2 -->
-                <div class="col-lg-4 col-md-6">
-                    <article class="news-card wow animate__animated animate__fadeInUp" data-wow-delay="250ms">
-                        <div class="news-thumb">
-                            <img src="https://placehold.co/600x400/1a1a2e/FF6A00?text=News+2" alt="Actualité 2">
-                            <span class="news-tag">Technique</span>
-                        </div>
-                        <div class="news-body">
-                            <ul class="news-meta">
-                                <li><i class="far fa-calendar-alt"></i> 10 Mars 2024</li>
-                                <li><i class="far fa-user"></i> Admin</li>
-                            </ul>
-                            <h4><a href="#">Guide : Comment améliorer votre aim</a></h4>
-                            <p>Nos joueurs professionnels partagent leurs conseils pour perfectionner votre visée...</p>
-                            <a href="#" class="news-read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
+                @empty
+                <div class="col-12 text-center">
+                    <p class="text-muted">Aucune actualité disponible pour le moment.</p>
                 </div>
-
-                <!-- Carte 3 -->
-                <div class="col-lg-4 col-md-6">
-                    <article class="news-card wow animate__animated animate__fadeInUp" data-wow-delay="400ms">
-                        <div class="news-thumb">
-                            <img src="https://placehold.co/600x400/1a1a2e/FF6A00?text=News+3" alt="Actualité 3">
-                            <span class="news-tag">Équipement</span>
-                        </div>
-                        <div class="news-body">
-                            <ul class="news-meta">
-                                <li><i class="far fa-calendar-alt"></i> 5 Mars 2024</li>
-                                <li><i class="far fa-user"></i> Admin</li>
-                            </ul>
-                            <h4><a href="#">Top 10 des souris gaming en 2024</a></h4>
-                            <p>Nous avons testé les meilleures souris gaming du marché pour vous...</p>
-                            <a href="#" class="news-read-more">Lire la suite <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
-                </div>
+                @endforelse
             </div>
 
         </div>
     </section>
+
+    <!-- Script pour charger les produits dynamiquement -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(products => {
+                const container = document.getElementById('products-container');
+                
+                products.forEach(product => {
+                    // Générer les étoiles
+                    let starsHtml = '';
+                    for (let i = 1; i <= 5; i++) {
+                        if (i <= product.stars) {
+                            starsHtml += '<i class="fas fa-star"></i>';
+                        } else {
+                            starsHtml += '<i class="far fa-star"></i>';
+                        }
+                    }
+
+                    // Déterminer l'URL de l'image
+                    const imageUrl = product.image || `https://placehold.co/300x260/1a1a2e/FF6A00?text=${encodeURIComponent(product.category)}`;
+
+                    // Générer le HTML du produit
+                    const productHtml = `
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-thumb">
+                                    <img src="${imageUrl}" alt="${product.title}">
+                                    ${product.badge ? `<span class="product-badge ${product.badge}">${product.badge_label}</span>` : ''}
+                                    <a class="product-btn" href="${product.amazon_url}" target="_blank" rel="noopener sponsored"><i class="fab fa-amazon"></i> Voir sur Amazon</a>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-top">
+                                        <span class="product-cat">${product.category}</span>
+                                        <div class="product-stars">
+                                            ${starsHtml}
+                                        </div>
+                                    </div>
+                                    <h5><a href="${product.amazon_url}" target="_blank" rel="noopener sponsored">${product.title}</a></h5>
+                                    <span class="product-price">${product.price > 0 ? '$' + product.price : 'Check price'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.insertAdjacentHTML('beforeend', productHtml);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des produits:', error);
+                const container = document.getElementById('products-container');
+                container.innerHTML = '<p class="text-center text-gray-400">Aucun produit disponible pour le moment.</p>';
+            });
+    });
+    </script>
 
     <!-- Inclusion du footer -->
     @include('snippets.footer')

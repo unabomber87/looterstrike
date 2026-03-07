@@ -23,8 +23,8 @@
             <div class="col-lg-3 col-md-6 footer-item mb-4">
                 <h4 class="footer-title">Liens utiles</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#upcoming-matches">Matchs</a></li>
+                    <li><a href="{{ route('home') }}">Accueil</a></li>
+                    <li><a href="{{ route('news') }}">News</a></li>
                     <li><a href="#watch-live">Live</a></li>
                     <li><a href="#shop">Shop</a></li>
                     <li><a href="#news">Actualités</a></li>
